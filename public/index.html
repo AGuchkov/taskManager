@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles/normalize.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <title>Title</title>
+</head>
+
+<body>
+  <main>
+    <div class="container">
+      <div class="wrapper">
+        <header>
+          <h1 class="title">Homepage Design</h1>
+          <ul class="dots">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li>
+              <button class="add fa-regular fa-plus"></button>
+            </li>
+          </ul>
+        </header>
+        <ul class="categories">
+          <li class="category">
+            <div class="category_info">
+              <h2 class="category_title">Task Ready</h2>
+              <div class="dropdown">
+                <button class="dropbtn category_btn fa-solid fa-ellipsis"></button>
+                <div class="dropdown-content">
+                  <button class="sort_title">по имени</button>
+                  <button class="sort_created">по дате создания</button>
+                  <button class="sort_expired">по дате сдачи</button>
+                </div>
+              </div>
+            </div>
+            <ul class="cards">
+              <li class="card">
+                <div class="card_top">
+                  <h2 class="card_title">UI Design</h2>
+                  <button class="card_btn card_edit fa-solid fa-pen-to-square"></button>
+                  <button class="card_btn card_delete fa-solid fa-trash-can"></button>
+                </div>
+                <div class="card_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni, molestiae!</div>
+                <div class="card_progress">
+                  <input autocomplete="off" type="range" min="0" max="100" value="70" disabled class="range">
+                  <div class="values">
+                    <span class="value">70</span>/<span>100</span>
+                  </div>
+                </div>
+                <div class="card_bot">
+                  <div class="card_dates">
+                    <p class="card_date-start">
+                      <i class="fa-solid fa-hourglass-start"></i><span>Nov 24</span>
+                    </p>
+                    <p class="card_date-end">
+                      <i class="fa-solid fa-hourglass-end"></i><span>Nov 24</span>
+                    </p>
+                  </div>
+                  <div class="card_dot"></div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div class="progress">
+          <div class="progress_card">
+            <h2 class="progress_title">Task Progress</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="form_container">
+    <div class="form_wrap">
+      <ul class="dots">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li>
+          <button class="close fa-solid fa-xmark"></button>
+        </li>
+      </ul>
+      <form id="taskEdit">
+        <div class="form_field">
+          <label for="task_title">Задача</label>
+          <input id="task_title" type="text" name="title" required maxlength="20">
+        </div>
+        <div class="form_field">
+          <label for="task_desc">Описание задачи</label>
+          <textarea name="value" id="task_desc" required maxlength="400"></textarea>
+        </div>
+        <div class="card_progress">
+          <input id="task_range" name="completeProgress" type="range" min="0" max="100" value="70">
+          <label for="task_range" class="values">
+            <span class="value">70</span>/<span>100</span>
+          </label>
+        </div>
+        <div class="form_field">
+          <label for="task_stage">Стадия</label>
+          <select id="task_stage" name="stage">
+            <option value="6374b4559763cf151816d508">Ready</option>
+            <option value="6374b4559763cf151816d509">Progress</option>
+            <option value="6374b4559763cf151816d50a">Rewiew</option>
+            <option value="6374b4559763cf151816d50b">Done</option>
+          </select>
+        </div>
+        <div class="form_field">
+          <label for="task_expired_date">Дата сдачи</label>
+          <input id="task_expired_date" type="date" name="expiredDate" required>
+        </div>
+        <input type="submit" value="Обновить задачу">
+      </form>
+      <form id="taskAdd">
+        <div class="form_field">
+          <label for="task_title">Задача</label>
+          <input id="task_title" type="text" name="title" required maxlength="20">
+        </div>
+        <div class="form_field">
+          <label for="task_desc">Описание задачи</label>
+          <textarea name="value" id="task_desc" required maxlength="400"></textarea>
+        </div>
+        <div class="form_field">
+          <label for="task_expired_date">Дата сдачи</label>
+          <input id="task_expired_date" type="date" name="expiredDate" required>
+        </div>
+        <input type="submit" value="Создать задачу">
+      </form>
+      <form id="taskDelete">
+        <p>Вы уверены, что хотите удалить задачу?</p>
+        <input type="submit" value="Да">
+      </form>
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/583353bd4e.js" crossorigin="anonymous"></script>
+  <script src="scripts/jquery-3.6.1.min.js"></script>
+  <script src="scripts/script.js"></script>
+</body>
+
+</html>
