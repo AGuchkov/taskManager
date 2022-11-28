@@ -5,6 +5,7 @@ $(document).ready(function () {
         await getStagesRequest()
         fillStagesList(dataStorage.stages)
         fillTasksList(dataStorage.tasks, dataStorage.stages)
+        fillProgressList(dataStorage.tasks)
 
         $('input[type="date"]').attr('min', changeFormatDate())
 
@@ -62,29 +63,29 @@ $(document).ready(function () {
 
     $('body').on('click', '.sort_title', function () {
         const cards = $(this).parent().parent().parent().next()
-        const card = $(this).parent().parent().parent().next().children()
 
-        card.sort(sortByTitle)
-
-        cards.append(card)
+        cards.each(function () {
+            const cardArr = $(this).children().sort(sortByTitle)
+            $(this).append(cardArr)
+        })
     })
 
     $('body').on('click', '.sort_created', function () {
         const cards = $(this).parent().parent().parent().next()
-        const card = $(this).parent().parent().parent().next().children()
 
-        card.sort(sortByCreatedDate)
-
-        cards.append(card)
+        cards.each(function () {
+            const cardArr = $(this).children().sort(sortByCreatedDate)
+            $(this).append(cardArr)
+        })
     })
 
     $('body').on('click', '.sort_expired', function () {
         const cards = $(this).parent().parent().parent().next()
-        const card = $(this).parent().parent().parent().next().children()
 
-        card.sort(sortByExpiredDate)
-
-        cards.append(card)
+        cards.each(function () {
+            const cardArr = $(this).children().sort(sortByExpiredDate)
+            $(this).append(cardArr)
+        })
     })
 
     function getTasksRequest() {
@@ -121,14 +122,14 @@ $(document).ready(function () {
 
     function updateTaskRequest() {
         return fetch(`/api/v1/tasks/${dataStorage.editID}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify(dataStorage.editTask)
         })
             .then((res) => res.json())
-            .then((data) => data)
+            .then((task) => task)
     }
 
     function removeTaskRequest() {
@@ -175,10 +176,10 @@ $(document).ready(function () {
             <div class="card_bot">
                 <div class="card_dates">
                     <p class="card_date-start">
-                        <i class="fa-solid fa-hourglass-start"></i><span>${createDate}</span>
+                        <i class="fa-solid fa-hourglass-start"></i><span data-creationDate="${task.creationDate}">${createDate}</span>
                     </p>
                     <p class="card_date-end">
-                        <i class="fa-solid fa-hourglass-end"></i><span>${expireDate}</span>
+                        <i class="fa-solid fa-hourglass-end"></i><span data-expiredDate="${task.expiredDate}">${expireDate}</span>
                     </p>
                 </div>
                 <div class="card_dot"></div>
@@ -188,9 +189,23 @@ $(document).ready(function () {
         return card
     }
 
+    const createProgressInfo = (task) => {
+        card = `
+        <li class="progress_item">
+            <h2 class="card_title">UI Design</h2>
+            <div class="card_progress">
+                <input autocomplete="off" type="range" min="0" max="100" value="70" disabled class="range">
+                <div class="values">
+                    <span class="value">70</span>/<span>100</span>
+                </div>
+            </div>
+        </li>`
+    }
+
     const sortByTitle = (a, b) => {
         a = $('.card_title', a).text().toLowerCase();
         b = $('.card_title', b).text().toLowerCase();
+
         if (a < b)
             return -1
         if (a > b)
@@ -199,14 +214,15 @@ $(document).ready(function () {
     }
 
     const sortByCreatedDate = (a, b) => {
-        a = new Date($('.card_date-start', a))
-        b = new Date($('.card_date-start', b))
+        a = new Date($('.card_date-start span', a).attr('data-creationDate'))
+        b = new Date($('.card_date-start span', b).attr('data-creationDate'))
+
         return a - b
     }
 
     const sortByExpiredDate = (a, b) => {
-        a = new Date($('.card_date-end', a))
-        b = new Date($('.card_date-end', b))
+        a = new Date($('.card_date-end span', a).attr('data-expiredDate'))
+        b = new Date($('.card_date-end span', b).attr('data-expiredDate'))
         return a - b
     }
 
@@ -231,6 +247,10 @@ $(document).ready(function () {
         const doneTasks = tasks.filter(task => task.stage === doneStage._id)
         doneTasks.forEach((task) => $(`.cards[id=${doneStage._id}]`).append(createTask(task)))
     })
+
+    const fillProgressList = (tasks) => {
+        console.log([...new Set(tasks)])
+    }
 
     const clearTasksList = () => {
         $('.cards').children().remove()
@@ -274,6 +294,12 @@ $(document).ready(function () {
         }
         clearTasksList()
         fillTasksList(dataStorage.tasks, dataStorage.stages);
+
+        $('.cards').each(function () {
+            const cardArr = $(this).children().sort(sortByTitle)
+            $(this).append(cardArr)
+        })
+
         $(this).parent().parent().parent().fadeOut()
         setTimeout(() => {
             $(this).parent().trigger('reset')

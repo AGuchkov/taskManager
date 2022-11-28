@@ -168,6 +168,7 @@ header {
 }
 
 .card_title {
+    display: inline-block;
     margin-right: auto;
     padding: 3px 10px;
     font-size: 14px;
@@ -345,7 +346,22 @@ header {
 }
 
 .progress_title {
+    margin-bottom: 20px;
     font-size: 20px;
+}
+
+.progress_item {
+    display: flex;
+    flex-direction: column;
+}
+
+.progress_item:not(last-child) {
+    margin-bottom: 10px;
+}
+
+.progress_item h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
 }
 
 form p {
