@@ -50,6 +50,7 @@ $(document).ready(function () {
         $('#taskDelete').hide()
         $('#taskEdit').show()
         $('.form_container').fadeIn()
+        $('html').css('overflow', 'hidden')
     })
 
     $('body').on('click', '.card_delete', function () {
@@ -59,6 +60,7 @@ $(document).ready(function () {
         $('#taskEdit').hide()
         $('#taskDelete').show()
         $('.form_container').fadeIn()
+        $('html').css('overflow', 'hidden')
     })
 
     $('body').on('click', '.sort_title', function () {
@@ -324,6 +326,7 @@ $(document).ready(function () {
         })
 
         $(this).parent().parent().fadeOut()
+        $('html').css('overflow', 'visible')
     })
 
     $('#task_range').on('input', function () {
@@ -335,9 +338,13 @@ $(document).ready(function () {
         $('#taskEdit').hide()
         $('#taskDelete').hide()
         $('.form_container').fadeIn()
+        $('html').css('overflow', 'hidden')
     })
 
     $('.close').on('click', () => {
         $('.form_container').fadeOut()
+        setTimeout(() => {
+            $('html').css('overflow', 'visible')
+        }, 1000)
     })
 });
