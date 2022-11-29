@@ -168,11 +168,11 @@ $(document).ready(function () {
             </div>
             <div class="card_desc">${task.value}</div>
             <div class="card_progress">
-                  <input type="range" min="0" max="100" value="${task.completeProgress}" disabled>
-                  <div class="values">
+                <input type="range" min="0" max="100" value="${task.completeProgress}" disabled>
+                <div class="values">
                     <span class="value">${task.completeProgress}</span>/<span>100</span>
-                  </div>
                 </div>
+            </div>
             <div class="card_bot">
                 <div class="card_dates">
                     <p class="card_date-start">
@@ -192,19 +192,21 @@ $(document).ready(function () {
     const createProgressInfo = (task) => {
         card = `
         <li class="progress_item">
-            <h2 class="card_title">UI Design</h2>
+            <h2 class="card_title">${task.title}</h2>
             <div class="card_progress">
-                <input autocomplete="off" type="range" min="0" max="100" value="70" disabled class="range">
+                <input type="range" min="0" max="${task.numberOfTotal}" value="${task.numberOfStarted}" disabled>
                 <div class="values">
-                    <span class="value">70</span>/<span>100</span>
+                    <span class="value">${task.numberOfStarted}</span>/<span>${task.numberOfTotal}</span>
                 </div>
             </div>
         </li>`
+
+        return card
     }
 
     const sortByTitle = (a, b) => {
-        a = $('.card_title', a).text().toLowerCase();
-        b = $('.card_title', b).text().toLowerCase();
+        a = $('h2', a).text().toLowerCase();
+        b = $('h2', b).text().toLowerCase();
 
         if (a < b)
             return -1
@@ -249,11 +251,30 @@ $(document).ready(function () {
     })
 
     const fillProgressList = (tasks) => {
-        console.log([...new Set(tasks)])
+        const progressArr = []
+
+        groupedTasks = Object.values(tasks.reduce((groupedTasks, task) => (task.title in groupedTasks ? groupedTasks[task.title].push(task) : groupedTasks[task.title] = [task], groupedTasks), {}))
+
+        groupedTasks.forEach(item => {
+            const progressObj = {
+                title: '',
+                numberOfStarted: '',
+                numberOfTotal: '',
+            }
+
+            progressObj.title = item[0].title
+            progressObj.numberOfStarted = item.filter(task => task.completeProgress).length
+            progressObj.numberOfTotal = item.length
+
+            progressArr.push(progressObj)
+        })
+
+        progressArr.forEach((task) => $('.progress_list').append(createProgressInfo(task)));
     }
 
-    const clearTasksList = () => {
+    const clearLists = () => {
         $('.cards').children().remove()
+        $('.progress_list').children().remove()
     }
 
     $('#taskAdd').on('change', () => {
@@ -277,33 +298,32 @@ $(document).ready(function () {
         dataStorage.editTask.expiredDate = expDate.toISOString()
     });
 
-    $('body').on('click', 'input[type="submit"]', async function (e) {
+    $('form').on('submit', async function (e) {
         e.preventDefault()
         dataStorage.tasks = []
-        if ($(this).parent().attr('id') === 'taskAdd') {
+        if ($(this).attr('id') === 'taskAdd') {
             await createTaskRequest();
             await getTasksRequest();
+            $(this).trigger('reset')
         }
-        if ($(this).parent().attr('id') === 'taskEdit') {
+        if ($(this).attr('id') === 'taskEdit') {
             await updateTaskRequest();
             await getTasksRequest();
         }
-        if ($(this).parent().attr('id') === 'taskDelete') {
+        if ($(this).attr('id') === 'taskDelete') {
             await removeTaskRequest();
             await getTasksRequest();
         }
-        clearTasksList()
-        fillTasksList(dataStorage.tasks, dataStorage.stages);
+        clearLists()
+        fillTasksList(dataStorage.tasks, dataStorage.stages)
+        fillProgressList(dataStorage.tasks)
 
         $('.cards').each(function () {
             const cardArr = $(this).children().sort(sortByTitle)
             $(this).append(cardArr)
         })
 
-        $(this).parent().parent().parent().fadeOut()
-        setTimeout(() => {
-            $(this).parent().trigger('reset')
-        }, 1000)
+        $(this).parent().parent().fadeOut()
     })
 
     $('#task_range').on('input', function () {
