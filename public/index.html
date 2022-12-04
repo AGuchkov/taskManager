@@ -61,7 +61,7 @@
           <textarea name="value" id="task_desc" required maxlength="400"></textarea>
         </div>
         <div class="card_progress">
-          <input id="task_range" name="completeProgress" type="range" min="0" max="100" value="70">
+          <input id="task_range" name="completeProgress" type="range" min="0" max="100" value="70" style="cursor: pointer">
           <label for="task_range" class="values">
             <span class="value">70</span>/<span>100</span>
           </label>
@@ -69,10 +69,6 @@
         <div class="form_field">
           <label for="task_stage">Стадия</label>
           <select id="task_stage" name="stage">
-            <option value="6374b4559763cf151816d508">Ready</option>
-            <option value="6374b4559763cf151816d509">Progress</option>
-            <option value="6374b4559763cf151816d50a">Rewiew</option>
-            <option value="6374b4559763cf151816d50b">Done</option>
           </select>
         </div>
         <div class="form_field">
@@ -105,7 +101,7 @@
 
   <script src="https://kit.fontawesome.com/583353bd4e.js" crossorigin="anonymous"></script>
   <script src="scripts/jquery-3.6.1.min.js"></script>
-  <script src="scripts/script.js"></script>
+  <script type="module" src="scripts/script.js"></script>
 </body>
 
 </html>

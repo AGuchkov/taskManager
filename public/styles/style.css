@@ -126,7 +126,7 @@ header {
     position: absolute;
     right: 0;
     background-color: #fff;
-    min-width: 161px;
+    min-width: 175px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 5px;
@@ -135,15 +135,32 @@ header {
 .dropdown-content button {
     width: 100%;
     text-align: left;
-    word-wrap: none;
+    word-wrap: unset;
     color: inherit;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
+.dropdown-content button::before {
+    content: '\1F847';
+    display: none;
+    position: absolute;
+    font-size: 22px;
+    right: 5px;
+    transition: all .3s ease 0s;
+}
+
 .dropdown-content button:hover {
     background-color: #EBF0F6;
+}
+
+.dropdown-content button:hover::before {
+    display: block;
+}
+
+.dropdown-content .reverse:hover::before {
+    transform: rotateX(180deg);
 }
 
 .dropdown:hover .dropdown-content {
@@ -426,6 +443,7 @@ select {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
+    text-transform: capitalize;
 }
 
 select:not([multiple]) {
